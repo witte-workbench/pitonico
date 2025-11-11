@@ -1,5 +1,5 @@
 # Pitonico
-![Pitonico Logo](/pitonico-logo.png)
+<img src="/pitonico-logo.png" alt="Pitonico Logo" width="150"/>
 
 Coding is hard enough in your own language. Yet, for over 519 million native Spanish speakers, the only option is to use English-based programming languages.
 
