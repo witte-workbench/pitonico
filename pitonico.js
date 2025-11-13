@@ -617,3 +617,120 @@ var spanishWords = [];
 for (let k of Object.keys(spanishToEnglish)) {
     spanishWords = spanishWords.concat(Object.keys(spanishToEnglish[k]))
 }
+
+
+
+
+import { Parser, Language } from './node_modules/web-tree-sitter/tree-sitter.js';
+
+await Parser.init({
+    locateFile: fileName => `./node_modules/web-tree-sitter/${fileName}`
+});
+
+const PI = await Language.load(
+    './wasm/tree-sitter-pitonico.wasm'
+);
+const PY = await Language.load(
+    './wasm/tree-sitter-python.wasm'
+);
+
+const parser = new Parser();
+
+export function translate_to_pitonico(src) {
+    translate_pitonico(src, true);
+}
+export function translate_from_pitonico(src) {
+    translate_pitonico(src, false);
+}
+
+export function translate_pitonico(src, toPitonico) {
+    let unsafeWords, translation;
+    if (toPitonico) {
+        parser.setLanguage(PY);
+        unsafeWords = spanishWords;
+        translation = englishToSpanish;
+    } else {
+        parser.setLanguage(PI);
+        unsafeWords = englishWords;
+        translation = spanishToEnglish;
+    }
+    const tree = parser.parse(src);
+
+    // Collect edits only for true keyword positions
+    const edits = [];
+    function walk(node, childIndex) {
+        if (node.childCount !== 0) {
+            for (let i = 0; i < node.childCount; i++) {
+                walk(node.child(i), i);
+            }
+            return;
+        }
+
+        const fancyType = findFancyType(node, childIndex);
+
+        if (!fancyType) {
+            return;
+        }
+
+        let replacement;
+        const dict = translation[fancyType];
+        if (dict && node.text in dict) {
+            replacement = dict[node.text];
+        } else if (unsafeWords.includes(node.text)) {
+            replacement = node.text+"_pi_tr";
+        }
+        edits.push({
+            start: node.startIndex,
+            end: node.endIndex,
+            replacement: replacement
+        });
+    }
+    walk(tree.rootNode);
+    
+    // Apply replacements from bottom-up
+    edits.sort((a,b) => b.start - a.start);
+    let result = src;
+    for (const {start, end, replacement} of edits)
+        result = result.slice(0,start) + replacement + result.slice(end);
+    return result;
+}
+
+function findFancyType(node, childIndex) {
+    const typeConditions = [
+        {type: "method", gp: "call", p: "attribute", t: "identifier", ci: 2},
+        {type: "method", p: "attribute", t: "identifier", ci: 2}, // "attribute"
+        {type: "module", gp: "import_from_statement", p: "dotted_name", t: "identifier", ci: 0},
+        {type: "module", gp: "aliased_import", p: "dotted_name", t: "identifier"},
+        {type: "module", gp: "import_statement", p: "dotted_name", t: "identifier"},
+        {type: "exception", gp: "except_clause", p: "as_pattern", t: "identifier", ci: 0},
+        {type: "exception", gp: "raise_statement", p: "call", t: "identifier", ci: 0},
+
+        {type: "module", p: "attribute", t: "identifier", ci: 0}, // "object"
+        {type: "function", p: "call", t: "identifier"},
+        {type: "type", p: "type", t: "identifier"},
+        {type: "module alias", p: "aliased_import", t: "identifier", ci: 2}, // unused for now
+        {type: "function", p: "decorator", t: "identifier", ci: 1}, // "decorator"
+    ];
+
+
+    const type = node.type;
+    const parentType = node.parent?.type;
+    const grandparentType = node.parent?.parent?.type;
+
+    if (keywordTypes.includes(node.type))
+        return "keyword";
+    
+    for (const condition of typeConditions) {
+        if ((!grandparentType || !condition.gp || condition.gp === grandparentType) &&
+            (!parentType || !condition.p || condition.p === parentType) &&
+            (!type || condition.t === type) &&
+            (!condition.ci || condition.ci === childIndex)
+        ) {
+            return condition.type;
+        }
+    }
+    if (node.type === "identifier")
+        return "identifier";
+
+    return undefined;
+}
