@@ -48,4 +48,4 @@ This project is a work in progress. If you have suggestions, please get involved
 
 - Pitonico does not translate variable or function names. However, it does translate many common packages, modules, methods, and attribute names.
 - Not every function or feature is supported - We're still a work in progress!
-- The format of this project is not final. The plan is to make a web portal, VSCode extension, linter/syntax highlighter, terminal utility, and much better documentation. 
+- The format of this project is not final. The plan is to make a web portal, VSCode extension, syntax highlighter, terminal utility, and much better documentation. 
