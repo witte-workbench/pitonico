@@ -7,17 +7,18 @@ With Pitonico, you can code in Python using Spanish keywords!
 
 ## Example
 Here's an example of Pitonico code:
-<pre><code><span style="color:#d73a49;">importa</span> mat
+```python
+importa mat
 
-<span style="color:#d73a49;">def</span> <span style="color:#6f42c1;">resumen_factorial</span>(numero):
-    <span style="color:#d73a49;">si</span> numero <span style="color:#005cc5;">&lt;</span> <span style="color:#005cc5;">0</span>:
-        <span style="color:#d73a49;">lanza</span> <span style="color:#6f42c1;">ErrorDeValor</span>(<span style="color:#032f62;">"Números negativos no permitidos"</span>)
-    secuencia = <span style="color:#6f42c1;">lista</span>(<span style="color:#6f42c1;">rango</span>(<span style="color:#005cc5;">1</span>, numero <span style="color:#005cc5;">+ 1</span>))
-    total = mat.<span style="color:#005cc5;">prod</span>(secuencia)
-    <span style="color:#d73a49;">devuelve</span> <span style="color:#6f42c1;">redondea</span>(total <span style="color:#005cc5;">/</span> (<span style="color:#6f42c1;">suma</span>(secuencia) <span style="color:#005cc5;">o</span> <span style="color:#005cc5;">1</span>))
+def resumen_factorial(numero):
+    si numero < 0:
+        lanza ErrorDeValor("Números negativos no permitidos")
+    secuencia = lista(rango(1, numero + 1))
+    total = mat.prod(secuencia)
+    devuelve redondea(total / (suma(secuencia) o 1))
 
-<span style="color:#6f42c1;">imprime</span>(<span style="color:#6f42c1;">resumen_factorial</span>(<span style="color:#005cc5;">5</span>))
-</code></pre>
+imprime(resumen_factorial(5))
+```
 
 And here's it's matching English Python:
 ```python
