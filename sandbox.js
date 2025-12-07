@@ -170,3 +170,7 @@ $("download").onclick = function() {
 
     document.body.removeChild(element);
 }
+
+$("hide").onclick = function() {
+    $('terminal').style.display = ($('terminal').style.display == "none") ? "" : "none";
+}
