@@ -1,0 +1,25 @@
+{
+  "name": "pitonico",
+  "displayName": "Pitonico",
+  "description": "VSCode support for Pitonico code.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "pitonico",
+      "aliases": ["Pitonico", "pitonico"],
+      "extensions": [".pi"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "pitonico",
+      "scopeName": "source.pitonico",
+      "path": "./syntaxes/pitonico.tmLanguage.json"
+    }]
+  }
+}
