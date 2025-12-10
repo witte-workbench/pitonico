@@ -678,6 +678,8 @@ export function translate_pitonico(src, toPitonico) {
             replacement = dict[node.text];
         } else if (unsafeWords.includes(node.text)) {
             replacement = node.text+"_pi_tr";
+        } else {
+            return;
         }
         edits.push({
             start: node.startIndex,
