@@ -1,5 +1,5 @@
 # Pitonico
-<img src="/pitonico-logo.png" alt="Pitonico Logo" width="150"/>
+<img src="/images/pitonico-logo.png" alt="Pitonico Logo" width="150"/>
 
 
 <details>
