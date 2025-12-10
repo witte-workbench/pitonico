@@ -22,7 +22,7 @@ if (isSpanish) {
 
 
 
-import { translate_pitonico } from './pitonico.js';
+import { translate_pitonico } from './module/pitonico.js';
 
 $('convertPrimary').addEventListener('click', ()=>{
     translate(!isSpanish);

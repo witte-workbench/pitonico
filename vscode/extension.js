@@ -1,7 +1,7 @@
 const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
-const { init_pitonico, translate_to_pitonico, translate_from_pitonico } = require('./pitonico.js');
+const { init_pitonico, translate_to_pitonico, translate_from_pitonico } = require('../module/pitonico_cjs.js');
 
 function activate(context) {
     const runPi = vscode.commands.registerCommand('pitonico.runPi', async () => {

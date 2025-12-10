@@ -625,15 +625,19 @@ for (let k of Object.keys(spanishToEnglish)) {
 
 
 await Parser.init({
-    locateFile: fileName => `./node_modules/web-tree-sitter/${fileName}`
+    locateFile(fileName) {
+        return new URL(`./node_modules/web-tree-sitter/${fileName}`, import.meta.url).href;
+    }
 });
 
 const PI = await Language.load(
-    './wasm/tree-sitter-pitonico.wasm'
+    new URL('./wasm/tree-sitter-pitonico.wasm', import.meta.url).href
 );
+
 const PY = await Language.load(
-    './wasm/tree-sitter-python.wasm'
+    new URL('./wasm/tree-sitter-python.wasm', import.meta.url).href
 );
+
 
 const parser = new Parser();
 
