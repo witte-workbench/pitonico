@@ -25,24 +25,25 @@
     "commands": [
       {
         "command": "pitonico.runPi",
-        "title": "Run Pi File"
+        "title": "%runPiFile%",
+        "icon": "$(play)"
       },
       {
         "command": "pitonico.pyToPi",
-        "title": "EN to ES"
+        "title": "EN → ES"
       }
     ],
     "menus": {
-      "editor/title": [
+      "editor/title/run": [
         {
           "command": "pitonico.runPi",
           "when": "resourceLangId == pitonico",
-          "group": "navigation"
+          "group": "navigation@1"
         },
         {
           "command": "pitonico.pyToPi",
           "when": "resourceLangId == pitonico",
-          "group": "navigation"
+          "group": "navigation@2"
         }
       ]
     }
