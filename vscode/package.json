@@ -9,6 +9,7 @@
   "categories": [
     "Programming Languages"
   ],
+  "main": "./extension.js",
   "contributes": {
     "languages": [{
       "id": "pitonico",
@@ -20,6 +21,30 @@
       "language": "pitonico",
       "scopeName": "source.pitonico",
       "path": "./syntaxes/pitonico.tmLanguage.json"
-    }]
+    }],
+    "commands": [
+      {
+        "command": "pitonico.runPi",
+        "title": "Run Pi File"
+      },
+      {
+        "command": "pitonico.pyToPi",
+        "title": "EN to ES"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "pitonico.runPi",
+          "when": "resourceLangId == pitonico",
+          "group": "navigation"
+        },
+        {
+          "command": "pitonico.pyToPi",
+          "when": "resourceLangId == pitonico",
+          "group": "navigation"
+        }
+      ]
+    }
   }
 }

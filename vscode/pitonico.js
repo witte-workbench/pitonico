@@ -1,5 +1,6 @@
 
-import { Parser, Language } from './node_modules/web-tree-sitter/tree-sitter.js';
+const { Parser, Language } = require('web-tree-sitter');
+const path = require('path');
 
 var keywordTypes = ["true", "false", "none", "and", "or", "as", "assert", "async", "await", "break", "class", "continue", "def", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "pass", "raise", "return", "try", "while", "with", "yield", "case", "match"];
 
@@ -620,31 +621,31 @@ for (let k of Object.keys(spanishToEnglish)) {
     spanishWords = spanishWords.concat(Object.keys(spanishToEnglish[k]))
 }
 
+var PI, PY, parser;
+async function init_pitonico() {
+    if (parser!==undefined) { // already init
+        return;
+    }
+    await Parser.init();
+    parser = new Parser();
+
+    PI = await Language.load(
+        path.join(__dirname, 'wasm', 'tree-sitter-pitonico.wasm')
+    );
+    PY = await Language.load(
+        path.join(__dirname, 'wasm', 'tree-sitter-python.wasm')
+    );
+}
 
 
-
-
-await Parser.init({
-    locateFile: fileName => `./node_modules/web-tree-sitter/${fileName}`
-});
-
-const PI = await Language.load(
-    './wasm/tree-sitter-pitonico.wasm'
-);
-const PY = await Language.load(
-    './wasm/tree-sitter-python.wasm'
-);
-
-const parser = new Parser();
-
-export function translate_to_pitonico(src) {
+function translate_to_pitonico(src) {
     return translate_pitonico(src, true);
 }
-export function translate_from_pitonico(src) {
+function translate_from_pitonico(src) {
     return translate_pitonico(src, false);
 }
 
-export function translate_pitonico(src, toPitonico) {
+function translate_pitonico(src, toPitonico) {
     let unsafeWords, translation;
     if (toPitonico) {
         parser.setLanguage(PY);
@@ -737,3 +738,10 @@ function findFancyType(node, childIndex) {
 
     return undefined;
 }
+
+
+module.exports = {
+    translate_from_pitonico,
+    translate_to_pitonico,
+    init_pitonico
+};
